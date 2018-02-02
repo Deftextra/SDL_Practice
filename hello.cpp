@@ -23,6 +23,10 @@ main (int argc, char *argv[])
       return -1;
     }
     else {
+      //Print instruction on window surface
+      SDL_BlitSurface(gKeyPressSurface[0], NULL, gScreenSurface, NULL);    
+      SDL_UpdateWindowSurface(gWindow); 
+      
       //Main program loop. 
       while (!Quit) {
 	//Obtain events from event queue.                               
