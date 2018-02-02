@@ -1,37 +1,68 @@
 #include <SDL2/SDL.h>
-#include <stdio.h> 
+#include <stdio.h>
 #include "InEnd.h"
 
 
+#define EVENT_QUEUE_IS_EMPTY 0
 
-int main( int argc, char *argv[])
+
+int
+main (int argc, char *argv[])
 {
-	//Start up SDL and create window 
-	if ( !init() ) {
-		printf( "failed to initialize!\n" ); 
-	}
-	else {
-		//Load media 
-		if (!loadMedia() ) {
-			printf( "Failed to load media!\n" ); 
-		}
-		else {
-			//Apply the image 
-			SDL_BlitSurface( gHelloWorld, NULL, SDL_GetWindowSurface( gWindow ), NULL); 
-			//Update the surface 
-			SDL_UpdateWindowSurface( gWindow ); 
-			//Wait 10 seconds
-			SDL_Delay( 10000 ); 
-		}
-	}
-	
-	closeClosed(); 
-	
-	return 0; 	
-}	
-	
-		
-	
-	
-			
+  bool Quit = false;
+  SDL_Event s;
+  
 
+  if (!init ()) {
+    fprintf (stderr, "Error during initilization\n");
+    return -1;
+  }
+  else {
+    if (!loadMedia ()) {
+      fprintf (stderr, "Error during loading media:\n");
+      return -1;
+    }
+    else {
+      //Main program loop. 
+      while (!Quit) {
+	//Obtain events from event queue.                               
+	while (SDL_PollEvent (&s) != EVENT_QUEUE_IS_EMPTY) {
+	  //quit program
+	  if (s.type == SDL_QUIT) {
+	    Quit = true;
+	    break;
+	  }
+	  //key press events. 
+	  if (s.type == SDL_KEYDOWN) {
+	    switch (s.key.keysym.sym) {
+	      case SDLK_UP:
+	        SDL_BlitSurface (gKeyPressSurface[1], NULL,
+			       gScreenSurface, NULL);
+                SDL_UpdateWindowSurface(gWindow); 
+                break; 
+              
+              case SDLK_RIGHT: 
+                SDL_BlitSurface(gKeyPressSurface[2], NULL, gScreenSurface, NULL); 
+                SDL_UpdateWindowSurface(gWindow); 
+                break; 
+                    
+              case SDLK_DOWN: 
+                SDL_BlitSurface(gKeyPressSurface[3], NULL, gScreenSurface, NULL); 
+                SDL_UpdateWindowSurface(gWindow); 
+                break;         
+              case SDLK_LEFT:  
+                SDL_BlitSurface(gKeyPressSurface[4], NULL, gScreenSurface, NULL); 
+                SDL_UpdateWindowSurface(gWindow); 
+                break;  
+             
+           }
+         }
+       }
+     }  
+   } 
+  }  
+  Close(); 
+  
+  return 0;   
+
+}
