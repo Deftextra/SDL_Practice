@@ -1,20 +1,33 @@
+# Compiler used. 
+CC = gcc 
 
-CC=gcc 
-CFLAGS=-c 
+# Directory containing header files. 
+INCLUDE = './include'
+
+# Object complation flags.
+CFLAGS = -c -iquote './include'
+
+# Object files compiled from source.
+Objects = main.o InEnd.o 
+
+# Main Headers. 
+Mainh = include/InEnd.h
+
 
 all: hello
 
-hello: hello.o InEnd.o  
-	$(CC) hello.o InEnd.o -lSDL2 -o hello 
+ 
+hello:  $(Objects)
+	$(CC) $(Objects) -lSDL2 -o hello 
 
-hello.o: hello.cpp 
-	$(CC) $(CFLAGS) hello.cpp
+main.o: main.cpp $(Mainh) 
+	$(CC) $(CFLAGS) main.cpp 
 
-InEnd.o: InEnd.cpp 
+InEnd.o: InEnd.cpp $(Mainh)
 	$(CC) $(CFLAGS) InEnd.cpp 
 
-
-rm: 
+.PHONY: clean
+clean: 
 	rm *.o hello
 	
 
