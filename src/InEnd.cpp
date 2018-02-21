@@ -67,7 +67,7 @@ loadMedia ()
   char I[300]; 
 
   for (int i = 0; i < 5; i++) {
-    sprintf(I, "./Images/%i", i);
+    sprintf(I, "../data/Images/%i", i);
     if ((gKeyPressSurface[i] = LoadSurface(I)) == NULL) 
       return false; 
     

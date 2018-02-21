@@ -48,7 +48,7 @@ main (int argc, char *argv[])
                 break; 
               
               case SDLK_RIGHT: 
-                SDL_BlitSurface(gKeyPressSurface[2], &srcrect, gScreenSurface, &dstrect); 
+                SDL_BlitSurface(gKeyPressSurface[2], NULL, gScreenSurface, NULL); 
                 SDL_UpdateWindowSurface(gWindow); 
                 break; 
                     

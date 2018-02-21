@@ -1,34 +1,39 @@
-# Compiler used. 
-CC = gcc 
+# ------------Macros-----------------------
+#
+# TODO: Move `libmongoclient.a` to /usr/local/lib so this can work on production servers
+CC := gcc # This is the main compiler
+# CC := clang --analyze # and comment out the linker last line for sanity
+SRCDIR := src
+BUILDDIR := build
+TARGET := bin/runner
+SRCEXT := cpp
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+CFLAGS := -g # -Wall
+LIB := -lSDL2 
+INC := -I include
+#--------------File Dependencies----------------------
 
-# Directory containing header files. 
-INCLUDE = './include'
+$(TARGET): $(OBJECTS)
+	@echo " Linking..."
+	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
 
-# Object complation flags.
-CFLAGS = -c -iquote './include'
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDDIR)
+	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
-# Object files compiled from source.
-Objects = main.o InEnd.o 
+clean:
+	@echo " Cleaning..."; 
+	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
-# Main Headers. 
-Mainh = include/InEnd.h
+#---------------------Other dependencies---------------------
 
-
-all: hello
-
- 
-hello:  $(Objects)
-	$(CC) $(Objects) -lSDL2 -o hello 
-
-main.o: main.cpp $(Mainh) 
-	$(CC) $(CFLAGS) main.cpp 
-
-InEnd.o: InEnd.cpp $(Mainh)
-	$(CC) $(CFLAGS) InEnd.cpp 
+# Tests
+# tester:
+#   $(CC) $(CFLAGS) test/tester.cpp $(INC) $(LIB) -o bin/tester
+#
+#   # Spikes
+ticket:
+	  $(CC) $(CFLAGS) spikes/ticket.cpp $(INC) $(LIB) -o bin/ticket
 
 .PHONY: clean
-clean: 
-	rm *.o hello
-	
-
-
