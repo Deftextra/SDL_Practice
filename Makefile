@@ -12,6 +12,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CFLAGS := -g # -Wall
 LIB := -lSDL2 
 INC := -I include
+RM := rm
 #--------------File Dependencies----------------------
 
 $(TARGET): $(OBJECTS)
