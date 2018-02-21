@@ -39,6 +39,7 @@ main (int argc, char *argv[])
 	    break;
 	  }
 	  //key press events. 
+    //This is added
 	  if (s.type == SDL_KEYDOWN) {
 	    switch (s.key.keysym.sym) {
 	      case SDLK_UP:
